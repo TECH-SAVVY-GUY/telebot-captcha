@@ -22,7 +22,7 @@ app = flask.Flask(__name__)
 database = pymysql.connect(
     host=os.getenv("MYSQLHOST"),
     user=os.getenv("MYSQLUSER"), 
-    port=os.getenv("MYSQLPORT"),
+    port=int(os.getenv("MYSQLPORT")),
     db=os.getenv("MYSQLDATABASE"),
     password=os.getenv("MYSQLPASSWORD")
 )
