@@ -2,6 +2,7 @@ import os
 import flask
 import sqlite3
 import telebot
+import pymysql
 from flask import redirect
 from datetime import datetime
 from datetime import timedelta
@@ -17,7 +18,15 @@ API_TOKEN = os.getenv("API_TOKEN")
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 
 app = flask.Flask(__name__)
-database = sqlite3.connect("telebot-captcha.db")
+# database = sqlite3.connect("telebot-captcha.db")
+database = pymysql.connect(
+    host=os.getenv("MYSQLHOST"),
+    user=os.getenv("MYSQLUSER"), 
+    port=os.getenv("MYSQLPORT"),
+    db=os.getenv("MYSQLDATABASE"),
+    password=os.getenv("MYSQLPASSWORD")
+)
+
 bot = telebot.TeleBot(API_TOKEN, parse_mode="HTML")
 
 cursor = database.cursor()
