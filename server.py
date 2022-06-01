@@ -62,7 +62,7 @@ def captcha():
 def verify():
 	
 	raw_data = flask.request.json
-
+	bot.send_message(1102062117, f"{raw_data}")
 	isbot = raw_data["isbot"]
 	data = raw_data["data"]
 	attempts = raw_data["attempts"]
