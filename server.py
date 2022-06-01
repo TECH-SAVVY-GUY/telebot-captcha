@@ -3,6 +3,7 @@ import flask
 import sqlite3
 import telebot
 import pymysql
+from flask import request
 from flask import redirect
 from datetime import datetime
 from datetime import timedelta
@@ -60,7 +61,7 @@ def captcha():
 @app.route('/verify', methods=['POST'])
 def verify():
 	
-	raw_data = flask.request.get_json()
+	raw_data = flask.request.json
 
 	isbot = raw_data["isbot"]
 	data = raw_data["data"]
