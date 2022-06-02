@@ -21,7 +21,7 @@ BOT_USERNAME = os.getenv("BOT_USERNAME")
 app = flask.Flask(__name__)
 # database = sqlite3.connect("telebot-captcha.db")
 database = pymysql.connect(
-    host=os.getenv("MYSQLHOST"),
+    host=os.getenv("MYSQLHOST"),		# To be replaced with SQLite
     user=os.getenv("MYSQLUSER"), 
     port=int(os.getenv("MYSQLPORT")),
     db=os.getenv("MYSQLDATABASE"),
@@ -62,17 +62,18 @@ def captcha():
 def verify():
 	
 	raw_data = flask.request.json
+	print(raw_data)		# To be removed
 	isbot = raw_data["isbot"]
-	data = raw_data["data"]
+	initData = raw_data["initData"]
 	attempts = raw_data["attempts"]
 
-	isValid = validate_web_app_data(API_TOKEN, data)
+	isValid = validate_web_app_data(API_TOKEN, initData)
 
 	if isValid:		
 		if not isbot:
-			initData = parse_web_app_data(API_TOKEN, data)
-			query_id = initData["query_id"]
-			user_id = initData["user"]["id"]
+			data = parse_web_app_data(API_TOKEN, initData)
+			query_id = data["query_id"]
+			user_id = data["user"]["id"]
 			bot.answer_web_app_query(query_id, InlineQueryResultArticle(
 				id=query_id, title="VERIFICATION PASSED!",
 				input_message_content=InputTextMessageContent(
@@ -83,13 +84,13 @@ def verify():
 						callback_data=f"unrestrict::{user_id}"))))
 		else:
 			if attempts == 3:
-				initData = parse_web_app_data(API_TOKEN, data)
-				query_id = initData["query_id"]
-				user_id = initData["user"]["id"]
-				if initData["user"]["username"]:
-					user_name = initData["user"]["username"]
+				data = parse_web_app_data(API_TOKEN, initData)
+				query_id = data["query_id"]
+				user_id = data["user"]["id"]
+				if data["user"]["username"]:
+					user_name = data["user"]["username"]
 				else:
-					user_name = initData["user"]["first_name"]
+					user_name = data["user"]["first_name"]
 				bot.answer_web_app_query(query_id, InlineQueryResultArticle(
 					id=query_id, title="VERIFICATION FAILED!",
 					input_message_content=InputTextMessageContent(
