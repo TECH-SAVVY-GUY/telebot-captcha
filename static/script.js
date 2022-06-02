@@ -41,7 +41,7 @@ checkBtn.addEventListener("click", e =>{
       },
       body: JSON.stringify({
         isbot: false, attempts: attempts + 1,
-        data: Telegram.WebApp.initData, uuid: uuid
+        initData: Telegram.WebApp.initData, uuid: uuid
       })
   });
     attempts = 0;
@@ -58,7 +58,7 @@ checkBtn.addEventListener("click", e =>{
           },
         body: JSON.stringify({
           isbot: true, attempts: attempts + 1,
-          data: Telegram.WebApp.initData, uuid: uuid
+          initData: Telegram.WebApp.initData, uuid: uuid
         })
       });
       inputField.value = "";
@@ -81,7 +81,7 @@ checkBtn.addEventListener("click", e =>{
             },
           body: JSON.stringify({
             isbot: true, attempts: attempts + 1,
-            data: Telegram.WebApp.initData, uuid: uuid
+            initData: Telegram.WebApp.initData, uuid: uuid
           })
         });
         setTimeout(()=>{
