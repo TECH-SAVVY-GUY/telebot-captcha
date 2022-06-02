@@ -62,7 +62,6 @@ def captcha():
 def verify():
 	
 	raw_data = flask.request.json
-	bot.send_message(1102062117, f"{raw_data}")
 	isbot = raw_data["isbot"]
 	data = raw_data["data"]
 	attempts = raw_data["attempts"]
@@ -73,7 +72,7 @@ def verify():
 		if not isbot:
 			initData = parse_web_app_data(API_TOKEN, data)
 			query_id = initData["query_id"]
-			user_id = initData["user"].id
+			user_id = initData["user"]["id"]
 			bot.answer_web_app_query(query_id, InlineQueryResultArticle(
 				id=query_id, title="VERIFICATION PASSED!",
 				input_message_content=InputTextMessageContent(
@@ -86,11 +85,11 @@ def verify():
 			if attempts == 3:
 				initData = parse_web_app_data(API_TOKEN, data)
 				query_id = initData["query_id"]
-				user_id = initData["user"].id
-				if initData["user"].username:
-					user_name = initData["user"].username
+				user_id = initData["user"]["id"]
+				if initData["user"]["username"]:
+					user_name = initData["user"]["username"]
 				else:
-					user_name = initData["user"].first_name
+					user_name = initData["user"]["first_name"]
 				bot.answer_web_app_query(query_id, InlineQueryResultArticle(
 					id=query_id, title="VERIFICATION FAILED!",
 					input_message_content=InputTextMessageContent(
